@@ -1,3 +1,5 @@
+package ru.ifmo.kravchenko;
+
 import java.util.Scanner;
 
 public class Beginner {
