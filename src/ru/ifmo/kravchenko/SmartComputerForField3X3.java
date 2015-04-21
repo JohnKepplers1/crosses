@@ -34,7 +34,7 @@ public class SmartComputerForField3X3 implements Player {
                 b = 1;
                 i++;
             }
-            if (i == 2) {
+            if (i == 3) {
 
             }
 
