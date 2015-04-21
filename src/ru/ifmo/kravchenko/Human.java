@@ -26,6 +26,8 @@ public class Human implements Player {
         return "Human";
     }
 
+
+
     public Cell getTurn(Field field) {
         Scanner sc = new Scanner(System.in);
         int size = field.size();

@@ -8,11 +8,14 @@ public class Beginner {
     private Scanner sc = new Scanner(System.in);
     private int size = 10;
     private byte i = 0;
+    int expert;
+
 
     public int getSize() {
         return size;
 
     }
+
 
     public void chooseField() {
         if (i > 0) {

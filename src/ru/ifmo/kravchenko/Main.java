@@ -8,9 +8,6 @@ import java.util.Scanner;
 class Main {
     static private int detector = 0;
 
-public int getDetector(){
-    return detector;
-}
     public static void main(final String[] args) throws InterruptedException,
             InvocationTargetException, ClassNotFoundException,
             InstantiationException, IllegalAccessException,
@@ -20,11 +17,12 @@ public int getDetector(){
         Beginner exemplar = new Beginner();
         exemplar.chooseVariantOfGame();
         if (exemplar.getChoice() == 2) {
-            System.out.println("Введите линейную характеристику поля. ");
+
             EventQueue.invokeAndWait(new Runnable() {
                 public void run() {
                     // создание главного окна
                     Window wnd = new Window();
+                   // System.out.println(wnd.boardSize);
                     wnd.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     wnd.setTitle("Tic-tack-toe");
                     wnd.setLocation(200, 200);
@@ -74,6 +72,10 @@ public int getDetector(){
             }
         }
 
+    }
+
+    public int getDetector() {
+        return detector;
     }
 
 

@@ -4,39 +4,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 
 public class Window extends JFrame {
 
 
-
-    // размер ячейки игровой доски, px.
-    private final int fieldWidth = 34;
-    // размеры окна, px
-    private final int frameWidth = 800;
-    private final int frameHeight = 520;
-    int u = 0;
-    final private Scanner sc = new Scanner(System.in);
-    final int j = sc.nextInt();
-    // размер игровой доски.
-    final int boardSize = j;
-    // количество крестиков или ноликов в непрерывной линии, при котором засчитывается выигрыш.
+    // Размер игровой доски(количество ячеек).
+    private final static int FIELD_SIZE = 10;
+    // Индикатор хода (если true, то первыми игру начинают крестики).
+    private final static boolean MOVE = false;
+    static int spy1;
+    static int spy2;
+    private static Field board;
+    // Размер окна(px).
+    private final int FRAME_WIDTH = 800;
+    private final int FRAME_HEIGHT = 520;
+    // Размер ячейки(px).
+    private final int CELL_WIDTH = 34;
+    Beginner exemplar = new Beginner();
+    //Минимальное количество крестиков или ноликов в непрерывной линии, при котором засчитывается выигрыш.
     private int WIN_COUNT = 5;
-    // если true - первыми начинают игру крестики
-    private boolean playerIsX = true;
     private JPanel gamePanel;
-
     // счет игры
     private int xCount = 0;
     private int oCount = 0;
 
-    private Field board;
-
     public Window() {
 
-        board = new Field(boardSize);
+        board = new Field(FIELD_SIZE);
 
-        // создание меню
+        // Создание меню.
         JMenuBar mainMenu = new JMenuBar();
         setJMenuBar(mainMenu);
         JMenu fileMenu = new JMenu("Файл");
@@ -50,24 +46,23 @@ public class Window extends JFrame {
         mainMenu.add(fileMenu);
         mainMenu.add(helpMenu);
 
-        // панель на которой размещена игровая доска
-        gamePanel = new JPanel(new GridLayout(boardSize, boardSize));
+        // Панель, на которой размещена игровая доска.
+        gamePanel = new JPanel(new GridLayout(FIELD_SIZE, FIELD_SIZE));
 
         JScrollPane scrollFrame = new JScrollPane(gamePanel);
         gamePanel.setAutoscrolls(true);
-        scrollFrame.setPreferredSize(new Dimension(frameWidth, frameHeight));
+        scrollFrame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 
         for (int i = 0; i < board.size(); i++) {
 
             for (int j = 0; j < board.size(); j++) {
 
-                JButton btn = new JButton(board.getItemAt(i, j).getName());
-                btn.setPreferredSize(new Dimension(fieldWidth, fieldWidth));
-                btn.setAction(new ButtonClickAction(i, j));
-                gamePanel.add(btn);
+                JButton myButton = new JButton(board.getItemAt(i, j).getName());
+                myButton.setPreferredSize(new Dimension(CELL_WIDTH, CELL_WIDTH));
+                myButton.setAction(new ButtonClickAction(i, j));
+                gamePanel.add(myButton);
             }
         }
-
         setContentPane(scrollFrame);
         pack();
 
@@ -80,15 +75,24 @@ public class Window extends JFrame {
         SwingUtilities.updateComponentTreeUI(gamePanel);
     }
 
+    public static int getSizeOfField() {
+        return FIELD_SIZE;
+    }
 
-    // Очистить игровую доску
+    public static Field getBoard() {
+        return board;
+    }
 
+    public static boolean getMove() {
+        return MOVE;
+    }
+
+    // Очистить игровую доску.
     private void clearGamePanel() {
 
-        playerIsX = true;
         int count = 0;
 
-        //очистка элементов игровой доски - тех, которые были использованы
+        //Очистка использованных элементов игровой доски.
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board.size(); j++) {
 
@@ -104,9 +108,10 @@ public class Window extends JFrame {
             }
         }
 
-        board = new Field(boardSize);
+        board = new Field(FIELD_SIZE);
     }
 
+    // Показать поле.
     private void renderGameField() {
         int count = 0;
         for (int i = 0; i < board.size(); i++)
@@ -117,18 +122,18 @@ public class Window extends JFrame {
                 if (board.getItemAt(i, j).equals(Cell.Type.O)
                         || board.getItemAt(i, j).equals(Cell.Type.X)) {
                     buff.setOpaque(true);
-                    buff.setForeground(Color.RED);
+                    buff.setForeground(Color.BLACK);
                 }
             }
     }
 
-    // действие при нажатии на кнопку (игровую ячейку)
+
+    // Действие при нажатии на кнопку(игровую ячейку).
     private class ButtonClickAction extends AbstractAction {
 
-        private static final long serialVersionUID = 1L;
 
-
-        // индекс ячейки игровой доски
+        MyCommand cmd = new MyCommand();
+        // Индекс ячейки.
         private int i, j;
 
         public ButtonClickAction(int i, int j) {
@@ -143,22 +148,36 @@ public class Window extends JFrame {
             JButton source = (JButton) e.getSource();
             JLabel label = new JLabel();
 
-            // клик по пустому полю
+            // Клик по пустому полю.
             if (!board.getItemAt(i, j).equals(Cell.Type.Null))
                 return;
 
-            // установка крестика или нолика на поле
-            board.setItemAt(playerIsX ? Cell.Type.X : Cell.Type.O, i, j);
+            // Установка крестика или нолика на поле.
+          /*  for (int i = 0; i < board.size(); i++)
+                for (int j = 0; j < board.size(); j++) {
+                    JButton buff = (JButton) gamePanel.getComponents()[5];
+                    buff.setText(board.getItemAt(i, j).getName());
+
+                    if (board.getItemAt(i, j).equals(Cell.Type.O)
+                            || board.getItemAt(i, j).equals(Cell.Type.X)) {
+                        buff.setOpaque(true);
+                        buff.setForeground(Color.RED);
+                    }
+                }
+                      */
+
+            cmd.execute(i, j);
             source.setText(board.getItemAt(i, j).getName());
             source.setEnabled(false);
-            board.setItemAt1();
+            spy1 = i;
+            spy2 = j;
+
+            board.setItemAt1(MOVE);
+
             renderGameField();
 
 
-            // меняем игрока
-
-
-            // проверка, есть ли победитель
+            // Проверка на наличие победителя.
             Cell.Type winner = board.getNextWinner(WIN_COUNT);
 
             if (winner != null && !winner.equals(Cell.Type.Null)) {
@@ -166,18 +185,17 @@ public class Window extends JFrame {
                 String msg;
 
                 if (winner.equals(Cell.Type.X)) {
-                    msg = "крестиков";
+                    msg = "крестиков!";
                     xCount++;
                 } else {
-                    msg = "ноликов";
+                    msg = "ноликов!";
                     oCount++;
                 }
 
                 renderGameField();
 
                 JOptionPane.showMessageDialog(Window.this, "Победа " + msg
-                                + ", счет " + " - крестики (" + xCount + "): нолики ("
-                                + oCount + ")", "Победа",
+                                + "\nКрестики — Нолики (" + xCount + "-" + oCount + ")", "Победа",
                         JOptionPane.INFORMATION_MESSAGE);
 
                 clearGamePanel();
@@ -186,14 +204,14 @@ public class Window extends JFrame {
         }
     }
 
-    // выход из приложения
+    // Выход из приложения.
     private class ExitActionListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             System.exit(0);
         }
     }
 
-    // сброс игры
+    // Новая игра.
     private class ClearActionListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             clearGamePanel();
@@ -202,13 +220,13 @@ public class Window extends JFrame {
         }
     }
 
-    // окно "о программе"
+    // О программе.
     private class AboutActionListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
 
             JOptionPane.showMessageDialog(Window.this, "Крестики-нолики "
-                            + boardSize + "x" + boardSize
-                            + ". \nДля победы составьте линию из " + WIN_COUNT
+                            + FIELD_SIZE + "x" + FIELD_SIZE
+                            + ". \nДля победы составьте линию (миниумум) из " + WIN_COUNT
                             + " крестиков или ноликов.", "О программе",
                     JOptionPane.INFORMATION_MESSAGE);
 

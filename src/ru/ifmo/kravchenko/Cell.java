@@ -3,9 +3,18 @@ package ru.ifmo.kravchenko;
 // тип для ячейки
 public class Cell {
 
-    public int i;
-    public int j;
-    public Type type;
+    private int i;
+    private  int j;
+    private Type type;
+    public int get1(){
+        return i;
+    }
+    public int get2(){
+        return j;
+    }
+    public Type get3(){
+        return type;
+    }
 
     Cell(int i, int j, Type type) {
         this.i = i;

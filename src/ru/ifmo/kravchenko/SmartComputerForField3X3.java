@@ -1,4 +1,9 @@
-package ru.ifmo.kravchenko;/*public class SmartComputerForField3X3 implements Player {
+package ru.ifmo.kravchenko;
+
+public class SmartComputerForField3X3 implements Player {
+    int i = 1;
+    int a = 0;
+    int b = 0;
     private Beginner exemplar = new Beginner();
     private String playerName = "RandomPlayer";
     private Cell.Type playerType;
@@ -22,9 +27,25 @@ package ru.ifmo.kravchenko;/*public class SmartComputerForField3X3 implements Pl
     }
 
     public Cell getTurn(Field field) {
-        for (int i = 0; i < exemplar.getSize(); i++){
+        i++;
+        if (playerType == Cell.Type.X) {
+            if (i == 1) {
+                a = 1;
+                b = 1;
+                i++;
+            }
+            if (i == 2) {
+
+            }
 
         }
 
+
+        return new Cell(a, b, playerType);
+
+
     }
-}*/
+}
+
+
+

@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Random;
 
 public class Field {
-    private final Beginner exemplar = new Beginner();
     private Cell.Type[][] field;
     private int n;
     private int five1 = 0;
@@ -34,17 +33,21 @@ public class Field {
         field[i][j] = value;
     }
 
-    public void setItemAt1() {
+    public void setItemAt1(boolean trushin) {
         Random random = new Random();
 
         while (true) // цикл хода
         {
-            int j = random.nextInt(exemplar.getSize());
-            int i = random.nextInt(exemplar.getSize());
+            int j = random.nextInt(Window.getSizeOfField());
+            int i = random.nextInt(Window.getSizeOfField());
 
             if (field[i][j] == Cell.Type.Null) {
+                if (trushin == true) {
 
-                field[i][j] = Cell.Type.O;
+                    field[i][j] = Cell.Type.O;
+                } else {
+                    field[i][j] = Cell.Type.X;
+                }
                 break;
             }
         }
@@ -57,13 +60,13 @@ public class Field {
 
     public Cell.Type getNextWinner(int winCount) {
 
-        if (winCount > exemplar.getSize())
+        if (winCount > Window.getSizeOfField())
             throw new IllegalArgumentException("Длина выигрышной линии не может быть больше размера доски");
 
         Cell.Type result = null;
 
-        for (int i = 0; i < exemplar.getSize(); i++)
-            for (int j = 0; j < exemplar.getSize(); j++) {
+        for (int i = 0; i < Window.getSizeOfField(); i++)
+            for (int j = 0; j < Window.getSizeOfField(); j++) {
                 result = findWin(i, j, winCount);
                 if (result != null)
                     return result;
@@ -98,7 +101,7 @@ public class Field {
         cnti = i;
         winItems.clear();
         //поиск вниз
-        while (cnti < exemplar.getSize()) {
+        while (cnti < Window.getSizeOfField()) {
             result = searchAndReplace(i, j, cnti, j, winCount);
             cnti++;
 
@@ -112,7 +115,7 @@ public class Field {
         cnti = i;
         cntj = j;
         winItems.clear();
-        while (cnti < exemplar.getSize() && cntj >= 0) {
+        while (cnti < Window.getSizeOfField() && cntj >= 0) {
 
             result = searchAndReplace(i, j, cnti, cntj, winCount);
             cnti++;
@@ -127,7 +130,7 @@ public class Field {
         cnti = i;
         cntj = j;
         winItems.clear();
-        while (cnti < exemplar.getSize() && cntj < exemplar.getSize()) {
+        while (cnti < Window.getSizeOfField() && cntj < Window.getSizeOfField()) {
             result = searchAndReplace(i, j, cnti, cntj, winCount);
             cnti++;
             cntj++;
@@ -145,7 +148,7 @@ public class Field {
 
     //Получение значения ячейки.
     public void setCell(Cell cell) {
-        field[cell.i][cell.j] = cell.type;
+        field[cell.get1()][cell.get2()] = cell.get3();
     }
 
     public int size() {
@@ -199,12 +202,12 @@ public class Field {
                 five1 = 0;
                 five2 = 0;
                 for (int j = 0; j < n; j++) {
-                    if (field[j][i] == cell.type) {
+                    if (field[j][i] == cell.get3()) {
                         five1++;
                     } else {
                         five1 = 0;
                     }
-                    if (field[i][j] == cell.type) {
+                    if (field[i][j] == cell.get3()) {
                         five2++;
                     } else {
                         five2 = 0;
@@ -233,22 +236,22 @@ public class Field {
                 five4 = 0;
                 z = i;
                 for (int j = 0; j < n; j++) {
-                    if (field[z][j] == cell.type) {
+                    if (field[z][j] == cell.get3()) {
                         five1++;
                     } else {
                         five1 = 0;
                     }
-                    if (field[n - 1 - j][n - 1 - z] == cell.type) {
+                    if (field[n - 1 - j][n - 1 - z] == cell.get3()) {
                         five2++;
                     } else {
                         five2 = 0;
                     }
-                    if (field[n - 1 - j][z] == cell.type) {
+                    if (field[n - 1 - j][z] == cell.get3()) {
                         five3++;
                     } else {
                         five3 = 0;
                     }
-                    if (field[z][n - 1 - z] == cell.type) {
+                    if (field[z][n - 1 - z] == cell.get3()) {
                         five4++;
                     } else {
                         five4 = 0;
@@ -271,7 +274,7 @@ public class Field {
                 }
                 five1 = 0;
                 for (int j = 0; j < k + 1; j++) {
-                    if (field[z][j] == cell.type) {
+                    if (field[z][j] == cell.get3()) {
                         five1++;
                         z--;
                     }
@@ -285,7 +288,7 @@ public class Field {
 
 
             for (int i = n - 1; i < n; i--) {
-                if (field[i][n - 1 - i] != cell.type)
+                if (field[i][n - 1 - i] != cell.get3())
                     break;
                 if (i == 0)
                     return true;
@@ -295,7 +298,7 @@ public class Field {
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if (field[i][j] != cell.type) {
+                    if (field[i][j] != cell.get3()) {
                         break;
                     }
 
@@ -306,7 +309,7 @@ public class Field {
 
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < n; k++) {
-                        if (field[k][j] != cell.type)
+                        if (field[k][j] != cell.get3())
                             break;
                         if (k == n - 1)
                             return true;
@@ -314,9 +317,9 @@ public class Field {
                 }
             }
 
-            if (cell.i == cell.j) {
+            if (cell.get1() == cell.get2()) {
                 for (int i = 0; i < n; i++) {
-                    if (field[i][i] != cell.type)
+                    if (field[i][i] != cell.get3())
                         break;
                     if (i == n - 1)
                         return true;
@@ -324,7 +327,7 @@ public class Field {
             }
 
             for (int i = n - 1; i < n; i--) {
-                if (field[i][n - 1 - i] != cell.type)
+                if (field[i][n - 1 - i] != cell.get3())
                     break;
                 if (i == 0)
                     return true;
