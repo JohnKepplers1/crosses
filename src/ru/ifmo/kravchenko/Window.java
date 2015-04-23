@@ -5,8 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Window extends JFrame {
 
+public class Window extends JFrame /*implements ActionListener */ {
 
     // Размер игровой доски(количество ячеек).
     private final static int FIELD_SIZE = 10;
@@ -20,6 +20,8 @@ public class Window extends JFrame {
     private final int FRAME_HEIGHT = 520;
     // Размер ячейки(px).
     private final int CELL_WIDTH = 34;
+    ModelInterface model;
+    ControllerInterface controller;
     Beginner exemplar = new Beginner();
     //Минимальное количество крестиков или ноликов в непрерывной линии, при котором засчитывается выигрыш.
     private int WIN_COUNT = 5;
@@ -29,7 +31,6 @@ public class Window extends JFrame {
     private int oCount = 0;
 
     public Window() {
-
         board = new Field(FIELD_SIZE);
 
         // Создание меню.
@@ -67,7 +68,7 @@ public class Window extends JFrame {
         pack();
 
         // события
-        exitItem.addActionListener(new ExitActionListener());
+        exitItem.addActionListener(new ExitActionListener(controller, model));
         aboutItem.addActionListener(new AboutActionListener());
         clearItem.addActionListener(new ClearActionListener());
 
@@ -206,8 +207,19 @@ public class Window extends JFrame {
 
     // Выход из приложения.
     private class ExitActionListener implements ActionListener {
+        ControllerInterface controller;
+        ModelInterface model;
+
+        public ExitActionListener(ControllerInterface controller, ModelInterface model) {
+            this.controller = controller;
+            this.model = model;
+          //  model.registerObserver((BeatObserver) this);
+        }
+
         public void actionPerformed(ActionEvent event) {
+//            controller.start();
             System.exit(0);
+            controller.start();
         }
     }
 
