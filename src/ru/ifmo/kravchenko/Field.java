@@ -7,6 +7,8 @@ import java.util.Random;
 public class Field {
     private Cell.Type[][] field;
     private int n;
+    private int jconst = 0;
+    private int iconst = 0;
     private int five1 = 0;
     private int five2 = 0;
     private Collection<Integer[]> winItems;
@@ -21,6 +23,12 @@ public class Field {
                 field[i][j] = Cell.Type.Null;
             }
         }
+    }
+    public int getJconst(){
+        return jconst;
+    }
+    public int getIconst(){
+        return iconst;
     }
 
     public void setItemAt(Cell.Type value, int i, int j) {
@@ -42,6 +50,8 @@ public class Field {
             int i = random.nextInt(Window.getSizeOfField());
 
             if (field[i][j] == Cell.Type.Null) {
+                iconst = i;
+                jconst = j;
                 if (trushin == true) {
 
                     field[i][j] = Cell.Type.O;
@@ -58,10 +68,23 @@ public class Field {
         return (i < n && j < n) ? field[i][j] : null;
     }
 
+    public void myMethod(boolean trushin, int i, int j) {
+        if (trushin == false) {
+
+            field[i][j] = Cell.Type.O;
+        } else {
+            field[i][j] = Cell.Type.X;
+        }
+    }
+
+    public void myAnotherMethod(int i, int j) {
+        field[i][j] = Cell.Type.Null;
+    }
+
     public Cell.Type getNextWinner(int winCount) {
 
         if (winCount > Window.getSizeOfField())
-            throw new IllegalArgumentException("Длина выигрышной линии не может быть больше размера доски");
+            throw new IllegalArgumentException("Длина выигрышной линии не может быть больше размера доски.");
 
         Cell.Type result = null;
 
@@ -98,9 +121,10 @@ public class Field {
                 break;
         }
 
+
         cnti = i;
         winItems.clear();
-        //поиск вниз
+        //Поиск вниз.
         while (cnti < Window.getSizeOfField()) {
             result = searchAndReplace(i, j, cnti, j, winCount);
             cnti++;
@@ -111,7 +135,7 @@ public class Field {
                 break;
 
         }
-        //поиск по диагоналям
+        //Поиск по диагоналям.
         cnti = i;
         cntj = j;
         winItems.clear();
@@ -146,19 +170,10 @@ public class Field {
     }
 
 
-    //Получение значения ячейки.
-    public void setCell(Cell cell) {
-        field[cell.get1()][cell.get2()] = cell.get3();
-    }
-
     public int size() {
         return n;
     }
 
-    // возвращает значение ячейки.
-    Cell.Type cellType(int i, int j) {
-        return field[i][j];
-    }
 
     private Cell.Type searchAndReplace(int i, int j, int cnti, int cntj,
                                        int winCount) {
@@ -167,12 +182,12 @@ public class Field {
 
         if (item.equals(field[i][j])) {
 
-            //список для возможной выигрышной комбинации - добавляем индекс элемента
+            //Список для возможной выигрышной комбинации. Добавляем индекс элемента.
             winItems.add(new Integer[]{cnti, cntj});
 
-            //комбинация составлена
+            //Комбинация составлена.
             if (winItems.size() == winCount) {
-                // отмечаем выигрышные элементы
+                //Отмечаем выигрышные элементы.
                 for (Integer[] buff : winItems) {
 
                     field[buff[0]][buff[1]] = field[buff[0]][buff[1]].equals(Cell.Type.X) ?
@@ -188,210 +203,6 @@ public class Field {
 
         return Cell.Type.Null;
 
-    }
-
-
-    // проверка на выигрышную комбинацию (пять в ряд).
-    boolean isWinner(Cell cell) {
-        Main detector = new Main();
-        if (detector.getDetector() == 1) {
-            for (int i = 0; i < n; i++) {
-                if ((five1 == 5) || (five2 == 5)) {
-                    break;
-                }
-                five1 = 0;
-                five2 = 0;
-                for (int j = 0; j < n; j++) {
-                    if (field[j][i] == cell.get3()) {
-                        five1++;
-                    } else {
-                        five1 = 0;
-                    }
-                    if (field[i][j] == cell.get3()) {
-                        five2++;
-                    } else {
-                        five2 = 0;
-                    }
-                    if ((five1 == 5) || (five2 == 5)) {
-                        return true;
-                    }
-                    if ((five1 == 5) || (five2 == 5)) {
-                        break;
-                    }
-                }
-            }
-            int z = 4;
-            five1 = 0;
-            five2 = 0;
-            int five3 = 0;
-            int five4 = 0;
-            int k = 4;
-            for (int i = k; i < n; i++) {
-                if ((five1 == 5) || (five2 == 5) || (five3 == 5) || (five4 == 5)) {
-                    break;
-                }
-                five1 = 0;
-                five2 = 0;
-                five3 = 0;
-                five4 = 0;
-                z = i;
-                for (int j = 0; j < n; j++) {
-                    if (field[z][j] == cell.get3()) {
-                        five1++;
-                    } else {
-                        five1 = 0;
-                    }
-                    if (field[n - 1 - j][n - 1 - z] == cell.get3()) {
-                        five2++;
-                    } else {
-                        five2 = 0;
-                    }
-                    if (field[n - 1 - j][z] == cell.get3()) {
-                        five3++;
-                    } else {
-                        five3 = 0;
-                    }
-                    if (field[z][n - 1 - z] == cell.get3()) {
-                        five4++;
-                    } else {
-                        five4 = 0;
-                    }
-                    z--;
-                    if ((five1 == 5) || (five2 == 5) || (five3 == 5) || (five4 == 5)) {
-                        return true;
-                    }
-                    if ((five1 == 5) || (five2 == 5) || (z < 0) || (five3 == 5) || (five4 == 5)) {
-                        break;
-                    }
-                }
-
-
-            }
-            k = n;
-            for (int i = k; i < n - 1; i++) {
-                if (five1 == 5) {
-                    break;
-                }
-                five1 = 0;
-                for (int j = 0; j < k + 1; j++) {
-                    if (field[z][j] == cell.get3()) {
-                        five1++;
-                        z--;
-                    }
-                }
-                z = i;
-
-
-                if (five1 == 5)
-                    return true;
-            }
-
-
-            for (int i = n - 1; i < n; i--) {
-                if (field[i][n - 1 - i] != cell.get3())
-                    break;
-                if (i == 0)
-                    return true;
-            }
-        }
-        if (detector.getDetector() == 2) {
-
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (field[i][j] != cell.get3()) {
-                        break;
-                    }
-
-                    if (j == n - 1) {
-                        return true;
-                    }
-                }
-
-                for (int j = 0; j < n; j++) {
-                    for (int k = 0; k < n; k++) {
-                        if (field[k][j] != cell.get3())
-                            break;
-                        if (k == n - 1)
-                            return true;
-                    }
-                }
-            }
-
-            if (cell.get1() == cell.get2()) {
-                for (int i = 0; i < n; i++) {
-                    if (field[i][i] != cell.get3())
-                        break;
-                    if (i == n - 1)
-                        return true;
-                }
-            }
-
-            for (int i = n - 1; i < n; i--) {
-                if (field[i][n - 1 - i] != cell.get3())
-                    break;
-                if (i == 0)
-                    return true;
-            }
-
-
-        }
-        return false;
-
-    }    //Проверка на выигрпышную комбинацию.
-    //(Полное заполнение горизонтали, вертикали или диагонали.)
-
-
-    // проверка, на наличие свободных ячеек поля.
-
-    boolean TheEnd() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (field[i][j] == Cell.Type.Null) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    // текущее поле.
-    void printField() {
-        System.out.print("@  ");
-        for (int i = 0; i < n; i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        String d;
-
-        for (int i = 0; i < n; i++) {
-            if (i < 10) {
-                System.out.print(i + "  ");
-            } else {
-                System.out.print(i + " ");
-            }
-            for (int j = 0; j < n; j++) {
-                if (j < 10) {
-                    d = ".";
-                    if (field[i][j] == Cell.Type.X) {
-                        d = "X";
-                    } else if (field[i][j] == Cell.Type.O) {
-                        d = "O";
-                    }
-                } else {
-                    d = " .";
-                    if (field[i][j] == Cell.Type.X) {
-                        d = " X";
-                    } else if (field[i][j] == Cell.Type.O) {
-                        d = " O";
-                    }
-                }
-
-                System.out.print(d + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 
 
