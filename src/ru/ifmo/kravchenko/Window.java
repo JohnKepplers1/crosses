@@ -11,8 +11,6 @@ public class Window extends JFrame {
     private final static int FIELD_SIZE = 3;
     // Индикатор хода (если true, то первыми игру начинают крестики).
     private final static boolean MOVE = false;
-    //static int spy1;
-    //static int spy2;
     private static Field board;
     static private int[] list1 = new int[FIELD_SIZE * FIELD_SIZE];
     // Размер окна(px).
@@ -20,14 +18,12 @@ public class Window extends JFrame {
     private final int FRAME_HEIGHT = 520;
     // Размер ячейки(px).
     private final int CELL_WIDTH = 34;
-    ModelInterface model;
-    ControllerInterface controller;
     private MyCommand cmd = new MyCommand();
     private int[] list2 = new int[FIELD_SIZE * FIELD_SIZE];
     private int iterator = -1;
     private int counter = 0;
     //Минимальное количество крестиков или ноликов в непрерывной линии, при котором засчитывается выигрыш.
-    private int WIN_COUNT = -1;
+    private int WIN_COUNT = 3;
     private JPanel gamePanel;
     // счет игры
     private int xCount = 0;
@@ -73,7 +69,7 @@ public class Window extends JFrame {
         pack();
 
         // события
-        exitItem.addActionListener(new ExitActionListener(controller, model));
+        exitItem.addActionListener(new ExitActionListener());
         aboutItem.addActionListener(new AboutActionListener());
         clearItem.addActionListener(new ClearActionListener());
 
@@ -100,6 +96,7 @@ public class Window extends JFrame {
         SwingUtilities.updateComponentTreeUI(mainMenu);
         SwingUtilities.updateComponentTreeUI(gamePanel);
     }
+    Controller cnt = new Controller(board);
 
     public static int getSizeOfField() {
         return FIELD_SIZE;
@@ -179,12 +176,13 @@ public class Window extends JFrame {
                 return;
             }
             cmd.execute(i, j);
+            board.myMethod(MOVE, i, j);
             iterator++;
             list1[iterator] = i;
             list2[iterator] = j;
-
+            renderGameField();
             counter++;
-            board.myMethod(MOVE, i, j);
+
             //  source.setText(board.getItemAt(i, j).getName());
             //  source.setEnabled(false);
             //     System.out.println(counter);
@@ -241,19 +239,13 @@ public class Window extends JFrame {
 
     // Выход из приложения.
     private class ExitActionListener implements ActionListener {
-        ControllerInterface controller;
-        ModelInterface model;
 
-        public ExitActionListener(ControllerInterface controller, ModelInterface model) {
-            this.controller = controller;
-            this.model = model;
-            //  model.registerObserver((BeatObserver) this);
+        public ExitActionListener() {
         }
 
         public void actionPerformed(ActionEvent event) {
-//            controller.start();
-            System.exit(0);
-            controller.start();
+            cnt.newGame();
+         //   System.exit(0);
         }
     }
 

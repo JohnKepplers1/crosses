@@ -1,17 +1,27 @@
 package ru.ifmo.kravchenko;
 
-public class Controller implements ControllerInterface {
-    ModelInterface model;
-    Window view;
-    public Controller(ModelInterface model){
-        this.model = model;
+import javax.swing.*;
+
+public class Controller {
+    private Field f;
+
+    public Controller(Field board) {
+        this.f = board;
+    }
 
 
-    }
-    public void start(){
-        System.out.println("Игра завершена");
-    }
-    public void stop(){
+    public void newGame() {
+        int reply = JOptionPane.showConfirmDialog(null, "Вы уверены, что хотите выйти?", "Выход", JOptionPane.INFORMATION_MESSAGE);
+
+        if (reply == JOptionPane.YES_OPTION) {
+
+            System.exit(0);
+
+        }
+        if (reply == JOptionPane.NO_OPTION) {
+
+
+        }
 
     }
 }
