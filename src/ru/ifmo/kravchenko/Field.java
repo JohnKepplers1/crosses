@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
-public class Field {
+public class Field implements ModelInterface  {
     private Cell.Type[][] field;
     private int n;
     private int jconst = 0;

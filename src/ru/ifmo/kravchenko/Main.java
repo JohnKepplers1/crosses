@@ -10,11 +10,21 @@ class Main {
             InvocationTargetException, ClassNotFoundException,
             InstantiationException, IllegalAccessException,
             UnsupportedLookAndFeelException {
+   /*    try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        GameModel model = new GameModel(15, 15, 6);
+        GameView view = new GameView(model);
+        view.setVisible(true);*/
 
 
 
 
-        EventQueue.invokeAndWait(new Runnable() {
+
+
+    EventQueue.invokeAndWait(new Runnable() {
             public void run() {
                 // Создание главного окна.
                 Window wnd = new Window();
@@ -25,7 +35,6 @@ class Main {
                 wnd.setVisible(true);
             }
         });
-
 
     }
 

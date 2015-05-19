@@ -1,6 +1,5 @@
 package ru.ifmo.kravchenko;
 
 public interface ModelInterface {
-    void registerObserver(Observer o);
-    void removeObserver(Observer o);
+    void myMethod(boolean b, int i, int j);
 }
