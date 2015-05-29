@@ -8,19 +8,19 @@ import java.awt.event.ActionListener;
 
 public class Window extends JFrame {
     // Размер игровой доски(количество ячеек).
-    private final static int FIELD_SIZE = 21;
+    private final static int FIELD_SIZE = 17;
     // Индикатор хода (если true, то первыми игру начинают крестики).
-    private final static boolean MOVE = false;
+    private final static boolean MOVE = true;
     private static Field board;
     private static int[] list1 = new int[FIELD_SIZE * FIELD_SIZE];
     //Минимальное количество крестиков или ноликов в непрерывной линии, при котором засчитывается выигрыш.
-    private static int WIN_COUNT = 5;
+    private static int WIN_COUNT = 9;
     // Размер окна(px).
     private final int FRAME_WIDTH = 800;
-    private final int FRAME_HEIGHT = 520;
+    private final int FRAME_HEIGHT = 550;
     // Размер ячейки(px).
     private final int CELL_WIDTH = 34;
-    Controller cnt = new Controller(board);
+    Controller cnt = new Controller();
     private MyCommand cmd = new MyCommand();
     private int[] list2 = new int[FIELD_SIZE * FIELD_SIZE];
     private int iterator = -1;
@@ -187,7 +187,7 @@ public class Window extends JFrame {
             //  source.setEnabled(false);
             if (counter < FIELD_SIZE * FIELD_SIZE) {
                 iterator++;
-                board.setSymbolByRandomComputer(MOVE);
+                board.setSymbolComp(MOVE);
                 list1[iterator] = board.getIconst();
                 list2[iterator] = board.getJconst();
                 renderGameField();

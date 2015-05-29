@@ -12,6 +12,9 @@ public class Field implements ModelInterface {
     private int iconst = 0;
     private int iterator = 0;
     private int controller = 0;
+    private int it = 0;
+    private int y = 0;
+    private int[] ar = new int[10];
     private Collection<Integer[]> winItems;
 
     Field(int size) {
@@ -38,9 +41,9 @@ public class Field implements ModelInterface {
         field[i][j] = value;
     }
 
-    public void setSymbolByRandomComputer(boolean trushin) {
+    public void setSymbolComp(boolean trushin) {
         Random random = new Random();
-        if (controller == 1) {
+       /* if (controller == 1) {
             controller = 0;
             int k;
             int m;
@@ -75,23 +78,388 @@ public class Field implements ModelInterface {
             }
 
 
+        } else {*/
+        if (Window.getSizeOfField() == 17) {
         } else {
+            if ((Window.getSizeOfField() == 3) && (Window.getWinCount() == 3)) {
+                for (int i = 0; i < 3; i++) {
+                    if ((field[0][i] == field[1][i]) && (field[0][i] == Cell.Type.O) && (field[2][i] == Cell.Type.Null)) {
+                        field[2][i] = Cell.Type.O;
+                        controller = 2;
+                        break;
 
-            while (true) // цикл хода
-            {
-                int j = random.nextInt(Window.getSizeOfField());
-                int i = random.nextInt(Window.getSizeOfField());
-
-                if (field[i][j] == Cell.Type.Null) {
-                    iconst = i;
-                    jconst = j;
-                    if (trushin == true) {
-
-                        field[i][j] = Cell.Type.O;
-                    } else {
-                        field[i][j] = Cell.Type.X;
                     }
-                    break;
+                    if ((field[0][i] == field[2][i]) && (field[0][i] == Cell.Type.O) && (field[1][i] == Cell.Type.Null)) {
+                        field[1][i] = Cell.Type.O;
+                        controller = 2;
+                        break;
+                    }
+                    if ((field[1][i] == field[2][i]) && (field[1][i] == Cell.Type.O) && (field[0][i] == Cell.Type.Null)) {
+                        field[0][i] = Cell.Type.O;
+                        controller = 2;
+                        break;
+                    }
+                }
+                if (controller != 2) {
+                    for (int i = 0; i < 3; i++) {
+                        if ((field[i][0] == field[i][1]) && (field[i][0] == Cell.Type.O) && (field[i][2] == Cell.Type.Null)) {
+                            field[i][2] = Cell.Type.O;
+                            controller = 2;
+                            break;
+
+                        }
+                        if ((field[i][0] == field[i][2]) && (field[i][0] == Cell.Type.O) && (field[i][1] == Cell.Type.Null)) {
+                            field[1][i] = Cell.Type.O;
+                            controller = 2;
+                            break;
+                        }
+                        if ((field[i][1] == field[i][2]) && (field[i][1] == Cell.Type.O) && (field[i][0] == Cell.Type.Null)) {
+                            field[i][0] = Cell.Type.O;
+                            controller = 2;
+                            break;
+                        }
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[0][0] == field[1][1]) && (field[0][0] == Cell.Type.O) && (field[2][2] == Cell.Type.Null)) {
+                        field[2][2] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[0][0] == field[2][2]) && (field[0][0] == Cell.Type.O) && (field[1][1] == Cell.Type.Null)) {
+                        field[1][1] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[1][1] == field[2][2]) && (field[1][1] == Cell.Type.O) && (field[0][0] == Cell.Type.Null)) {
+                        field[0][0] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[2][0] == field[1][1]) && (field[2][0] == Cell.Type.O) && (field[0][2] == Cell.Type.Null)) {
+                        field[0][2] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[2][0] == field[0][2]) && (field[2][0] == Cell.Type.O) && (field[1][1] == Cell.Type.Null)) {
+                        field[1][1] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[1][1] == field[0][2]) && (field[1][1] == Cell.Type.O) && (field[2][0] == Cell.Type.Null)) {
+                        field[2][0] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                for (int i = 0; i < 3; i++) {
+                    if ((field[0][i] == field[1][i]) && (field[0][i] == Cell.Type.X) && (field[2][i] == Cell.Type.Null)) {
+                        field[2][i] = Cell.Type.O;
+                        controller = 2;
+                        break;
+
+                    }
+                    if ((field[0][i] == field[2][i]) && (field[0][i] == Cell.Type.X) && (field[1][i] == Cell.Type.Null)) {
+                        field[1][i] = Cell.Type.O;
+                        controller = 2;
+                        break;
+                    }
+                    if ((field[1][i] == field[2][i]) && (field[1][i] == Cell.Type.X) && (field[0][i] == Cell.Type.Null)) {
+                        field[0][i] = Cell.Type.O;
+                        controller = 2;
+                        break;
+                    }
+                }
+                if (controller != 2) {
+                    for (int i = 0; i < 3; i++) {
+                        if ((field[i][0] == field[i][1]) && (field[i][0] == Cell.Type.X) && (field[i][2] == Cell.Type.Null)) {
+                            field[i][2] = Cell.Type.O;
+                            controller = 2;
+                            break;
+
+                        }
+                        if ((field[i][0] == field[i][2]) && (field[i][0] == Cell.Type.X) && (field[i][1] == Cell.Type.Null)) {
+                            field[1][i] = Cell.Type.O;
+                            controller = 2;
+                            break;
+                        }
+                        if ((field[i][1] == field[i][2]) && (field[i][1] == Cell.Type.X) && (field[i][0] == Cell.Type.Null)) {
+                            field[i][0] = Cell.Type.O;
+                            controller = 2;
+                            break;
+                        }
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[0][0] == field[1][1]) && (field[0][0] == Cell.Type.X) && (field[2][2] == Cell.Type.Null)) {
+                        field[2][2] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[0][0] == field[2][2]) && (field[0][0] == Cell.Type.X) && (field[1][1] == Cell.Type.Null)) {
+                        field[1][1] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[1][1] == field[2][2]) && (field[1][1] == Cell.Type.X) && (field[0][0] == Cell.Type.Null)) {
+                        field[0][0] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[2][0] == field[1][1]) && (field[2][0] == Cell.Type.X) && (field[0][2] == Cell.Type.Null)) {
+                        field[0][2] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[2][0] == field[0][2]) && (field[2][0] == Cell.Type.X) && (field[1][1] == Cell.Type.Null)) {
+                        field[1][1] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if ((field[1][1] == field[0][2]) && (field[1][1] == Cell.Type.X) && (field[2][0] == Cell.Type.Null)) {
+                        field[2][0] = Cell.Type.O;
+                        controller = 2;
+                    }
+                }
+                if (controller != 2) {
+                    if (it == 0) {
+                        if (field[1][1] == Cell.Type.X) {
+                            y = 1;
+                        }
+                    }
+                }
+                if ((y == 1) && (controller != 2)) {
+                    if (field[0][2] == Cell.Type.Null) {
+                        field[0][2] = Cell.Type.O;
+                    } else if (field[2][0] == Cell.Type.Null) {
+                        field[2][0] = Cell.Type.O;
+                    } else if (field[0][0] == Cell.Type.Null) {
+                        field[0][0] = Cell.Type.O;
+                    } else if (field[2][2] == Cell.Type.Null) {
+                        field[2][2] = Cell.Type.O;
+                    } else {
+                        while (true) // цикл хода
+                        {
+                            int j = random.nextInt(Window.getSizeOfField());
+                            int i = random.nextInt(Window.getSizeOfField());
+                            if (field[i][j] == Cell.Type.Null) {
+                                field[i][j] = Cell.Type.O;
+                            }
+                        }
+
+                    }
+                    controller = 2;
+                }
+                if (controller != 2) {
+                    if (it == 0) {
+                        if (field[2][2] == Cell.Type.X) {
+                            field[1][1] = Cell.Type.O;
+                            y = 2;
+                            ar[0] = 2;
+                            ar[1] = 2;
+
+                        }
+                        if (field[0][2] == Cell.Type.X) {
+                            field[1][1] = Cell.Type.O;
+                            y = 2;
+                            ar[0] = 0;
+                            ar[1] = 2;
+
+                        }
+                        if (field[2][0] == Cell.Type.X) {
+                            field[1][1] = Cell.Type.O;
+                            y = 2;
+                            ar[0] = 2;
+                            ar[1] = 0;
+
+                        }
+                        if (field[0][0] == Cell.Type.X) {
+                            field[1][1] = Cell.Type.O;
+                            y = 2;
+                            ar[0] = 0;
+                            ar[1] = 0;
+
+                        }
+                    }
+                }
+                if ((it == 1) && (controller != 2) && (y == 2)) {
+                    if ((ar[0] == 0) && (ar[1] == 0)) {
+                        if (field[2][2] == Cell.Type.Null) {
+                            field[2][2] = Cell.Type.O;
+                            y = 3;
+                        }
+                    }
+                    if (y != 3) {
+                        if ((ar[0] == 2) && (ar[1] == 0)) {
+                            if (field[0][2] == Cell.Type.Null) {
+                                field[0][2] = Cell.Type.O;
+                                y = 3;
+                            }
+                        }
+                    }
+                    if (y != 3) {
+                        if ((ar[0] == 0) && (ar[1] == 2)) {
+                            if (field[2][0] == Cell.Type.Null) {
+                                field[2][0] = Cell.Type.O;
+                                y = 3;
+                            }
+                        }
+                    }
+                    if (y != 3) {
+                        if ((ar[0] == 2) && (ar[1] == 2)) {
+                            if (field[0][0] == Cell.Type.Null) {
+                                field[0][0] = Cell.Type.O;
+                                y = 3;
+                            }
+                        }
+                    }
+                    if (y != 3) {
+                        if (field[1][0] == Cell.Type.Null) {
+                            field[1][0] = Cell.Type.O;
+                            y = 3;
+                        }
+                    }
+                    if (y != 3) {
+                        if (field[0][1] == Cell.Type.Null) {
+                            field[0][1] = Cell.Type.O;
+                            y = 3;
+                        }
+                    }
+                    if (y != 3) {
+                        if (field[1][2] == Cell.Type.Null) {
+                            field[1][2] = Cell.Type.O;
+                            y = 3;
+                        }
+                    }
+                    if (y != 3) {
+                        if (field[2][1] == Cell.Type.Null) {
+                            field[2][1] = Cell.Type.O;
+                            y = 3;
+                        }
+                    }
+                }
+                if ((controller != 2) && (it == 0)) {
+                    if (field[1][0] == Cell.Type.X) {
+                        ar[0] = 0;
+                        ar[1] = 1;
+                        ar[2] = 0;
+                        ar[3] = 1;
+                        ar[4] = 2;
+                        ar[5] = 1;
+                        ar[6] = 0;
+                        ar[7] = 0;
+                        ar[8] = 2;
+                        ar[9] = 0;
+                        field[1][1] = Cell.Type.O;
+                        y = 4;
+                    }
+                    if (field[0][1] == Cell.Type.X) {
+                        ar[0] = 1;
+                        ar[1] = 0;
+                        ar[2] = 1;
+                        ar[3] = 0;
+                        ar[4] = 1;
+                        ar[5] = 2;
+                        ar[6] = 0;
+                        ar[7] = 0;
+                        ar[8] = 0;
+                        ar[9] = 2;
+                        field[1][1] = Cell.Type.O;
+                        y = 4;
+
+                    }
+                    if (field[1][2] == Cell.Type.X) {
+                        ar[0] = 2;
+                        ar[1] = 1;
+                        ar[2] = 0;
+                        ar[3] = 1;
+                        ar[4] = 2;
+                        ar[5] = 1;
+                        ar[6] = 0;
+                        ar[7] = 2;
+                        ar[8] = 2;
+                        ar[9] = 2;
+                        field[1][1] = Cell.Type.O;
+                        y = 4;
+                    }
+                    if (field[2][1] == Cell.Type.X) {
+                        ar[0] = 1;
+                        ar[1] = 2;
+                        ar[2] = 1;
+                        ar[3] = 0;
+                        ar[4] = 1;
+                        ar[5] = 2;
+                        ar[6] = 2;
+                        ar[7] = 0;
+                        ar[8] = 2;
+                        ar[9] = 2;
+                        field[1][1] = Cell.Type.O;
+                        y = 4;
+                    }
+                }
+                if ((controller != 2) && (it == 1) && (y == 4)) {
+                    if (field[0][0] == Cell.Type.X) {
+                        field[2][2] = Cell.Type.O;
+                    }
+                    if (field[0][2] == Cell.Type.X) {
+                        field[2][0] = Cell.Type.O;
+                    }
+                    if (field[2][0] == Cell.Type.X) {
+                        field[0][2] = Cell.Type.O;
+                    }
+                    if (field[2][2] == Cell.Type.X) {
+                        field[0][0] = Cell.Type.O;
+                    }
+                    if (field[ar[0]][ar[1]] == Cell.Type.X) {
+                        field[0][0] = Cell.Type.O;
+                        y++;
+                    }
+                    if (y == 4) {
+                        if (field[ar[2]][ar[3]] == Cell.Type.X) {
+                            field[ar[6]][ar[7]] = Cell.Type.O;
+                            y++;
+                        }
+                        if (y == 4) {
+                        }
+                        if (field[ar[3]][ar[4]] == Cell.Type.X) {
+                            field[ar[8]][ar[9]] = Cell.Type.O;
+                        }
+                    }
+                    controller = 2;
+                }
+
+
+                controller = 0;
+                it++;
+
+            } else {
+
+
+                while (true) // цикл хода
+                {
+                    int j = random.nextInt(Window.getSizeOfField());
+                    int i = random.nextInt(Window.getSizeOfField());
+
+                    if (field[i][j] == Cell.Type.Null) {
+                        iconst = i;
+                        jconst = j;
+                        if (trushin == true) {
+
+                            field[i][j] = Cell.Type.O;
+                        } else {
+                            field[i][j] = Cell.Type.X;
+                        }
+                        break;
+                    }
                 }
             }
         }
