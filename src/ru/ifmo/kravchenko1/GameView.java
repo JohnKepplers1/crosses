@@ -1,4 +1,4 @@
-package ru.ifmo.kravchenko;
+package ru.ifmo.kravchenko1;
 
 
 import javax.swing.*;
@@ -13,7 +13,6 @@ public class GameView extends JFrame {
     private GameController controller;
     private JMenuItem mntmNewGame;
     private JMenuItem mntmExit;
-    private JMenuItem mntmAbout;
     private JMenuItem mntm5;
     private JMenuItem mntm10;
     private JMenuItem mntm15;

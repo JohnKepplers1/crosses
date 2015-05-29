@@ -1,4 +1,4 @@
-package ru.ifmo.kravchenko;
+package ru.ifmo.kravchenko1;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -29,7 +29,6 @@ abstract public class PanelField extends JPanel implements ISubscriber {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // ðèñóåì ðåø¸òêó
         for(int i = 0; i < getField().getWidth() + 1; i++) {
             g.drawLine(i * getCellWidth(), 0, i * getCellWidth(), getCellHeight() * getField().getHeight());
         }
@@ -39,7 +38,6 @@ abstract public class PanelField extends JPanel implements ISubscriber {
         }
 
 
-        // ðèñóåì ýëåìåíòû
         for(int j = 0; j < getField().getHeight(); j++) {
             for(int i = 0; i < getField().getWidth(); i++) {
                 int state = field.getCell(i, j).getState();

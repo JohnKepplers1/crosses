@@ -1,4 +1,4 @@
-package ru.ifmo.kravchenko;
+package ru.ifmo.kravchenko1;
 
 
 public abstract class PlaceShip {

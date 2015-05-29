@@ -1,4 +1,4 @@
-package ru.ifmo.kravchenko;
+package ru.ifmo.kravchenko1;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

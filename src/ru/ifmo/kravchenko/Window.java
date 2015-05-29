@@ -8,22 +8,23 @@ import java.awt.event.ActionListener;
 
 public class Window extends JFrame {
     // Размер игровой доски(количество ячеек).
-    private final static int FIELD_SIZE = 3;
+    private final static int FIELD_SIZE = 21;
     // Индикатор хода (если true, то первыми игру начинают крестики).
     private final static boolean MOVE = false;
     private static Field board;
-    static private int[] list1 = new int[FIELD_SIZE * FIELD_SIZE];
+    private static int[] list1 = new int[FIELD_SIZE * FIELD_SIZE];
+    //Минимальное количество крестиков или ноликов в непрерывной линии, при котором засчитывается выигрыш.
+    private static int WIN_COUNT = 5;
     // Размер окна(px).
     private final int FRAME_WIDTH = 800;
     private final int FRAME_HEIGHT = 520;
     // Размер ячейки(px).
     private final int CELL_WIDTH = 34;
+    Controller cnt = new Controller(board);
     private MyCommand cmd = new MyCommand();
     private int[] list2 = new int[FIELD_SIZE * FIELD_SIZE];
     private int iterator = -1;
     private int counter = 0;
-    //Минимальное количество крестиков или ноликов в непрерывной линии, при котором засчитывается выигрыш.
-    private int WIN_COUNT = 3;
     private JPanel gamePanel;
     // счет игры
     private int xCount = 0;
@@ -59,7 +60,7 @@ public class Window extends JFrame {
 
             for (int j = 0; j < board.size(); j++) {
 
-                JButton myButton = new JButton(board.getItemAt(i, j).getName());
+                JButton myButton = new JButton(board.getSymbol(i, j).getName());
                 myButton.setPreferredSize(new Dimension(CELL_WIDTH, CELL_WIDTH));
                 myButton.setAction(new ButtonClickAction(i, j));
                 gamePanel.add(myButton);
@@ -78,12 +79,12 @@ public class Window extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (iterator >= 0) {
                     cmd.undo(list1[iterator], list2[iterator]);
-                    board.myAnotherMethod(list1[iterator], list2[iterator]);
+                    board.setNull(list1[iterator], list2[iterator]);
                     renderGameField();
                     iterator--;
                     counter--;
                     cmd.undo(list1[iterator], list2[iterator]);
-                    board.myAnotherMethod(list1[iterator], list2[iterator]);
+                    board.setNull(list1[iterator], list2[iterator]);
                     renderGameField();
                     iterator--;
                     counter--;
@@ -96,7 +97,6 @@ public class Window extends JFrame {
         SwingUtilities.updateComponentTreeUI(mainMenu);
         SwingUtilities.updateComponentTreeUI(gamePanel);
     }
-    Controller cnt = new Controller(board);
 
     public static int getSizeOfField() {
         return FIELD_SIZE;
@@ -110,6 +110,10 @@ public class Window extends JFrame {
         return MOVE;
     }
 
+    public static int getWinCount() {
+        return WIN_COUNT;
+    }
+
     // Очистить игровую доску.
     private void clearGamePanel() {
 
@@ -119,7 +123,7 @@ public class Window extends JFrame {
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board.size(); j++) {
 
-                Cell.Type item = board.getItemAt(i, j);
+                Cell.Type item = board.getSymbol(i, j);
                 if (!item.equals(Cell.Type.Null)) {
                     JButton button = (JButton) gamePanel.getComponents()[count];
                     button.setText(new String());
@@ -140,10 +144,10 @@ public class Window extends JFrame {
         for (int i = 0; i < board.size(); i++)
             for (int j = 0; j < board.size(); j++) {
                 JButton buff = (JButton) gamePanel.getComponents()[count++];
-                buff.setText(board.getItemAt(i, j).getName());
+                buff.setText(board.getSymbol(i, j).getName());
 
-                if (board.getItemAt(i, j).equals(Cell.Type.O)
-                        || board.getItemAt(i, j).equals(Cell.Type.X)) {
+                if (board.getSymbol(i, j).equals(Cell.Type.O)
+                        || board.getSymbol(i, j).equals(Cell.Type.X)) {
                     buff.setOpaque(true);
                     buff.setForeground(Color.BLACK);
                 }
@@ -167,12 +171,8 @@ public class Window extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-
-            JButton source = (JButton) e.getSource();
-            //    JLabel label = new JLabel();
-
             // Клик по пустому полю.
-            if (!board.getItemAt(i, j).equals(Cell.Type.Null)) {
+            if (!board.getSymbol(i, j).equals(Cell.Type.Null)) {
                 return;
             }
             cmd.execute(i, j);
@@ -185,10 +185,9 @@ public class Window extends JFrame {
 
             //  source.setText(board.getItemAt(i, j).getName());
             //  source.setEnabled(false);
-            //     System.out.println(counter);
             if (counter < FIELD_SIZE * FIELD_SIZE) {
                 iterator++;
-                board.setItemAt1(MOVE);
+                board.setSymbolByRandomComputer(MOVE);
                 list1[iterator] = board.getIconst();
                 list2[iterator] = board.getJconst();
                 renderGameField();
@@ -199,7 +198,7 @@ public class Window extends JFrame {
 
 
             // Проверка на наличие победителя.
-            Cell.Type winner = board.getNextWinner(WIN_COUNT);
+            Cell.Type winner = board.getWinner(WIN_COUNT);
 
 
             if (winner != null && !winner.equals(Cell.Type.Null)) {
@@ -224,6 +223,7 @@ public class Window extends JFrame {
                 clearGamePanel();
 
             }
+            //Проверка на ничью.
             if (counter == FIELD_SIZE * FIELD_SIZE) {
                 counter = 0;
                 iterator = -1;
@@ -245,7 +245,7 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent event) {
             cnt.newGame();
-         //   System.exit(0);
+            //   System.exit(0);
         }
     }
 

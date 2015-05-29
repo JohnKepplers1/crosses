@@ -1,4 +1,4 @@
-package ru.ifmo.kravchenko;
+package ru.ifmo.kravchenko1;
 
 import java.util.ArrayList;
 
@@ -42,12 +42,11 @@ public class FieldShip {
                 ships.add(ship);
             }
         }
-        // óäàëÿåì îêðóæåíèå êîðîáëÿ
         for (int j = 0; j < getHeight(); j++) {
             for (int i = 0; i < getWidth(); i++) {
                 CellClass cell = cells[i][j];
-                if (cell.getState() == CellClass.CELL_BORDER) {
-                    cell.setState(CellClass.CELL_WATER);
+                if (cell.getState() == CellClass.getCellBorder()) {
+                    cell.setState(CellClass.getCellWater());
                 }
             }
         }
